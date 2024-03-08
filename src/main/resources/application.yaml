@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: SurveyApp
+  datasource:
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+server:
+  port: 8000
