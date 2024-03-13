@@ -2,7 +2,7 @@ spring:
   application:
     name: SurveyApp
   datasource:
-    url: ${MYSQL_URL}
+    url: ${MYSQL_ROOT}
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
 
