@@ -1,3 +1,5 @@
+package io.github.magek1511.surveysonline.config
+
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -8,18 +10,16 @@ import org.springframework.security.web.SecurityFilterChain
 @EnableWebSecurity
 class SecurityConfig {
     @Bean
-    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        http.csrf { csrf ->
-            csrf.disable()
-        }.authorizeHttpRequests { auth ->
-            auth.anyRequest().permitAll()
-        }.httpBasic {
-            it.disable()
-        }.formLogin {
-            it.disable()
-        }
+    fun configure(http: HttpSecurity): SecurityFilterChain {
+        http
+            .csrf { it.disable() }
+            .authorizeHttpRequests{requests ->
+                requests
+                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/api/**").authenticated()
+            }
 
         return http.build()
     }
 }
-

@@ -6,6 +6,8 @@ import io.github.magek1511.surveysonline.database.dao.UserDao
 import io.github.magek1511.surveysonline.database.entity.Privilege
 import io.github.magek1511.surveysonline.database.entity.Role
 import io.github.magek1511.surveysonline.database.entity.User
+import io.github.magek1511.surveysonline.database.enums.PrivilegeEnum
+import io.github.magek1511.surveysonline.database.enums.RoleEnum
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
@@ -28,53 +30,50 @@ class SetupDataLoader : ApplicationListener<ContextRefreshedEvent> {
     private lateinit var privilegeDao: PrivilegeDao
 
     @Transactional
-
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
-        if (alreadySetup) {
-            println("Already setuped")
-            return
-        }
-        println("New setup")
-        val readPrivilege = createPrivilegeIfNotFound("READ_PRIVILEGE")
-        val writePrivilege = createPrivilegeIfNotFound("WRITE_PRIVILEGE")
+
+        val readPrivilege = createPrivilegeIfNotFound(PrivilegeEnum.READ_PRIVILEGE)
+        val writePrivilege = createPrivilegeIfNotFound(PrivilegeEnum.WRITE_PRIVILEGE)
         val adminPrivileges = arrayListOf(readPrivilege, writePrivilege)
         val userPrivileges = arrayListOf(readPrivilege)
-        createRoleIfNotFound("ROLE_ADMIN", adminPrivileges)
-        createRoleIfNotFound("ROLE_USER", userPrivileges)
+        createRoleIfNotFound(RoleEnum.ROLE_ADMIN, adminPrivileges)
+        createRoleIfNotFound(RoleEnum.ROLE_USER, userPrivileges)
 
-        val adminRole: Role? = roleDao.findByName("ROLE_ADMIN")
+        val adminRole: Role? = roleDao.findByName(RoleEnum.ROLE_ADMIN)
         if (adminRole == null) {
             return
         } else {
-            val user = User().apply {
-                this.name = "Test"
-                this.email = "test@test.com"
-                this.password = "test"
-                this.roles = arrayListOf(adminRole)
+            if (userDao.findByEmail("test@test.com") == null) {
+                val user = User().apply {
+                    this.name = "Test"
+                    this.email = "test@test.com"
+                    this.password = "test"
+                    this.roles = arrayListOf(adminRole)
+                }
+                userDao.save(user)
             }
-            userDao.save(user)
 
             alreadySetup = true
         }
     }
 
     @Transactional
-    fun createPrivilegeIfNotFound(name: String): Privilege {
-        var privilege: Privilege? = privilegeDao.findByName(name)
+    fun createPrivilegeIfNotFound(privilegeEnum: PrivilegeEnum): Privilege {
+        var privilege: Privilege? = privilegeDao.findByName(privilegeEnum)
         if (privilege == null) {
             privilege = Privilege()
-            privilege.name = name
+            privilege.name = privilegeEnum
         }
         privilegeDao.save(privilege)
         return privilege
     }
 
     @Transactional
-    fun createRoleIfNotFound(name: String, privileges: Collection<Privilege>): Role {
-        var role: Role? = roleDao.findByName(name)
+    fun createRoleIfNotFound(roleEnum: RoleEnum, privileges: Collection<Privilege>): Role {
+        var role: Role? = roleDao.findByName(roleEnum)
         if (role == null) {
             role = Role().apply {
-                this.name = name
+                this.name = roleEnum
                 this.privileges = privileges
             }
         }

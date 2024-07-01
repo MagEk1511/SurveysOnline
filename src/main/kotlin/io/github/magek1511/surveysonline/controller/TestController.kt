@@ -1,22 +1,31 @@
 package io.github.magek1511.surveysonline.controller
 
-import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.*
 
-@Controller
+@RestController
 class TestController {
     @ResponseBody
-    @GetMapping("/greet")
+    @GetMapping("api/greet")
     fun greet(): String {
         return "Hi"
     }
 
-    @ResponseBody
-    @PostMapping("/greet")
+    @PostMapping("api/greet")
     fun namedGreet(@RequestBody name: String): String {
         return "Hi, $name"
     }
+
+    @ResponseBody
+    @GetMapping("api/admin")
+    fun adminPanel(): String {
+        return "A"
+    }
+
+    @ResponseBody
+    @GetMapping("api/auth")
+    fun auth(): String {
+        return "B"
+    }
+
+
 }
