@@ -5,20 +5,18 @@ import jakarta.persistence.*
 
 
 @Entity
-@Table(name="roles")
-class Role: AbstractEntity() {
-
+@Table(name = "roles")
+class Role(
     @Enumerated(EnumType.STRING)
-    var name: RoleEnum = RoleEnum.ROLE_USER
+    var name: RoleEnum = RoleEnum.ROLE_USER,
 
-    @ManyToMany(mappedBy = "roles")
-    var users: Collection<User>? = null
-
-    @ManyToMany
+    @ManyToMany(
+        fetch = FetchType.EAGER,
+    )
     @JoinTable(
         name = "roles_privileges",
         joinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "privilege_id", referencedColumnName = "id")]
     )
-    var privileges: Collection<Privilege>? = null
-}
+    private var privileges: Set<Privilege>,
+) : AbstractEntity()

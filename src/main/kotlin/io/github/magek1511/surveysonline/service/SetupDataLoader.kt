@@ -34,8 +34,8 @@ class SetupDataLoader : ApplicationListener<ContextRefreshedEvent> {
 
         val readPrivilege = createPrivilegeIfNotFound(PrivilegeEnum.READ_PRIVILEGE)
         val writePrivilege = createPrivilegeIfNotFound(PrivilegeEnum.WRITE_PRIVILEGE)
-        val adminPrivileges = arrayListOf(readPrivilege, writePrivilege)
-        val userPrivileges = arrayListOf(readPrivilege)
+        val adminPrivileges = hashSetOf(readPrivilege, writePrivilege)
+        val userPrivileges = hashSetOf(readPrivilege)
         createRoleIfNotFound(RoleEnum.ROLE_ADMIN, adminPrivileges)
         createRoleIfNotFound(RoleEnum.ROLE_USER, userPrivileges)
 
@@ -44,12 +44,13 @@ class SetupDataLoader : ApplicationListener<ContextRefreshedEvent> {
             return
         } else {
             if (userDao.findByEmail("test@test.com") == null) {
-                val user = User().apply {
-                    this.name = "Test"
-                    this.email = "test@test.com"
-                    this.password = "test"
-                    this.roles = arrayListOf(adminRole)
-                }
+                val user = User(
+                    name = "Test",
+                    username = "test_username",
+                    email = "test@test.com",
+                    password = "test",
+                    roles = hashSetOf(adminRole)
+                    )
                 userDao.save(user)
             }
 
@@ -69,13 +70,13 @@ class SetupDataLoader : ApplicationListener<ContextRefreshedEvent> {
     }
 
     @Transactional
-    fun createRoleIfNotFound(roleEnum: RoleEnum, privileges: Collection<Privilege>): Role {
+    fun createRoleIfNotFound(roleEnum: RoleEnum, privileges: HashSet<Privilege>): Role {
         var role: Role? = roleDao.findByName(roleEnum)
         if (role == null) {
-            role = Role().apply {
-                this.name = roleEnum
-                this.privileges = privileges
-            }
+            role = Role(
+                name = roleEnum,
+                privileges = privileges
+            )
         }
         roleDao.save(role)
         return role

@@ -12,3 +12,6 @@ spring:
 
 server:
   port: 8880
+
+app:
+  secret: ${SECRET_KEY}

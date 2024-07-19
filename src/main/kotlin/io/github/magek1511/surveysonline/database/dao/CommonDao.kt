@@ -8,7 +8,6 @@ import org.springframework.data.repository.NoRepositoryBean
 @NoRepositoryBean
 interface CommonDao<T : AbstractEntity> : CrudRepository<T, Long>{
     fun findEntityById(id: Long): T?
-
     fun save(entity: T)
     override fun findAll(): MutableIterable<T>
     override fun delete(deleted: T)

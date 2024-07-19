@@ -1,31 +1,33 @@
 package io.github.magek1511.surveysonline.controller
 
+import io.github.magek1511.surveysonline.service.UserService
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 
+
 @RestController
-class TestController {
-    @ResponseBody
-    @GetMapping("api/greet")
-    fun greet(): String {
-        return "Hi"
+@RequestMapping("api/example")
+class TestController(
+    private val service: UserService
+
+) {
+
+    @GetMapping
+    fun example(): String {
+        return "Hello, world!"
     }
 
-    @PostMapping("api/greet")
-    fun namedGreet(@RequestBody name: String): String {
-        return "Hi, $name"
+    @GetMapping("admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun exampleAdmin(): String {
+        return "Hello, admin!"
     }
 
-    @ResponseBody
-    @GetMapping("api/admin")
-    fun adminPanel(): String {
-        return "A"
+    @GetMapping("get-admin")
+    fun getAdmin(): String {
+        service.getAdmin()
+        return service.getByUsername(SecurityContextHolder.getContext().authentication.name).roles.toString()
     }
-
-    @ResponseBody
-    @GetMapping("api/auth")
-    fun auth(): String {
-        return "B"
-    }
-
 
 }

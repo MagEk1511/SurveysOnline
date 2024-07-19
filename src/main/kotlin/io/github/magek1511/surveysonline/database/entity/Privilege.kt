@@ -5,12 +5,13 @@ import jakarta.persistence.*
 
 
 @Entity
-@Table(name="privileges")
-class Privilege: AbstractEntity() {
-
+@Table(name = "privileges")
+class Privilege(
     @Enumerated(EnumType.STRING)
-    var name: PrivilegeEnum = PrivilegeEnum.NO_PRIVILEGE
+    var name: PrivilegeEnum = PrivilegeEnum.NO_PRIVILEGE,
 
     @ManyToMany(mappedBy = "privileges")
-    var roles: Collection<Role>? = null
-}
+    var roles: MutableCollection<Role>? = null,
+) : AbstractEntity()
+
+
