@@ -1,5 +1,6 @@
 package io.github.magek1511.surveysonline.database.entity
 
+import io.github.magek1511.surveysonline.database.entity.user.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.JoinColumn

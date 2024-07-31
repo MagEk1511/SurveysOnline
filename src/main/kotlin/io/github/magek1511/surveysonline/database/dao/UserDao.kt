@@ -1,6 +1,6 @@
 package io.github.magek1511.surveysonline.database.dao
 
-import io.github.magek1511.surveysonline.database.entity.User
+import io.github.magek1511.surveysonline.database.entity.user.User
 
 interface UserDao : CommonDao<User> {
     fun findByEmail(email: String): User?

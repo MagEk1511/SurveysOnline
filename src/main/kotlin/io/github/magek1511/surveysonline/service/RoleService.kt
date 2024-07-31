@@ -1,7 +1,7 @@
 package io.github.magek1511.surveysonline.service
 
 import io.github.magek1511.surveysonline.database.dao.RoleDao
-import io.github.magek1511.surveysonline.database.entity.Role
+import io.github.magek1511.surveysonline.database.entity.user.Role
 import io.github.magek1511.surveysonline.database.enums.RoleEnum
 import io.github.magek1511.surveysonline.util.exceptions.RoleNotFoundException
 import org.springframework.stereotype.Service

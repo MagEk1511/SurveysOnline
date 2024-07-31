@@ -1,7 +1,7 @@
 package io.github.magek1511.surveysonline.service
 
 import io.github.magek1511.surveysonline.config.AppConfig
-import io.github.magek1511.surveysonline.database.entity.User
+import io.github.magek1511.surveysonline.database.entity.user.User
 import org.springframework.stereotype.Service
 
 @Service

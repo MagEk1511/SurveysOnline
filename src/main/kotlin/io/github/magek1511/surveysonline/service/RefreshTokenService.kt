@@ -2,9 +2,8 @@ package io.github.magek1511.surveysonline.service
 
 import io.github.magek1511.surveysonline.config.AppConfig
 import io.github.magek1511.surveysonline.database.dao.RefreshTokenDao
-import io.github.magek1511.surveysonline.database.dao.UserDao
 import io.github.magek1511.surveysonline.database.entity.RefreshToken
-import io.github.magek1511.surveysonline.database.entity.User
+import io.github.magek1511.surveysonline.database.entity.user.User
 import io.github.magek1511.surveysonline.util.exceptions.InvalidTokenException
 import org.springframework.stereotype.Service
 import java.time.Instant

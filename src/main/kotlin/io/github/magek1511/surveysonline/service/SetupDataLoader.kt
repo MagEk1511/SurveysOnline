@@ -3,9 +3,9 @@ package io.github.magek1511.surveysonline.service
 import io.github.magek1511.surveysonline.database.dao.PrivilegeDao
 import io.github.magek1511.surveysonline.database.dao.RoleDao
 import io.github.magek1511.surveysonline.database.dao.UserDao
-import io.github.magek1511.surveysonline.database.entity.Privilege
-import io.github.magek1511.surveysonline.database.entity.Role
-import io.github.magek1511.surveysonline.database.entity.User
+import io.github.magek1511.surveysonline.database.entity.user.Privilege
+import io.github.magek1511.surveysonline.database.entity.user.Role
+import io.github.magek1511.surveysonline.database.entity.user.User
 import io.github.magek1511.surveysonline.database.enums.PrivilegeEnum
 import io.github.magek1511.surveysonline.database.enums.RoleEnum
 import jakarta.transaction.Transactional

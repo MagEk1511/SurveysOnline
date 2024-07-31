@@ -1,5 +1,6 @@
-package io.github.magek1511.surveysonline.database.entity
+package io.github.magek1511.surveysonline.database.entity.user
 
+import io.github.magek1511.surveysonline.database.entity.AbstractEntity
 import jakarta.persistence.*
 import jakarta.transaction.Transactional
 import org.springframework.security.core.GrantedAuthority

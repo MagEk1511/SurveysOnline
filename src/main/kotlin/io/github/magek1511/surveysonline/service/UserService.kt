@@ -1,7 +1,7 @@
 package io.github.magek1511.surveysonline.service
 
 import io.github.magek1511.surveysonline.database.dao.UserDao
-import io.github.magek1511.surveysonline.database.entity.User
+import io.github.magek1511.surveysonline.database.entity.user.User
 import io.github.magek1511.surveysonline.database.enums.RoleEnum
 import io.github.magek1511.surveysonline.util.exceptions.UserAlreadyExistException
 import io.github.magek1511.surveysonline.util.exceptions.UserNotFoundException

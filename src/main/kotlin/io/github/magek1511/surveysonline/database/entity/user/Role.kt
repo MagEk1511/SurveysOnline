@@ -1,5 +1,6 @@
-package io.github.magek1511.surveysonline.database.entity
+package io.github.magek1511.surveysonline.database.entity.user
 
+import io.github.magek1511.surveysonline.database.entity.AbstractEntity
 import io.github.magek1511.surveysonline.database.enums.RoleEnum
 import jakarta.persistence.*
 
