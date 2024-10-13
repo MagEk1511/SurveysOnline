@@ -15,11 +15,11 @@ class UserService(
     private val userDao: UserDao,
     private val roleService: RoleService
 ) {
-    fun save(user: User) {
+    fun save(user: User): User {
         return userDao.save(user)
     }
 
-    fun create(user: User) {
+    fun create(user: User): User {
         if (userDao.existsByUsername(user.username)) {
             throw UserAlreadyExistException("User with this Username already exists.")
         }

@@ -7,7 +7,7 @@ import jakarta.persistence.*
 class Survey(
     @Column(nullable = false, length = 255)
     var name: String,
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.ALL])
     @JoinTable(
         name = "surveys_questions",
         joinColumns = [JoinColumn(name = "survey_id", referencedColumnName = "id")],
