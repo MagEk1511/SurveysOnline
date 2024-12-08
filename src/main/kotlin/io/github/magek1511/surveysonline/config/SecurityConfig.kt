@@ -53,8 +53,9 @@ class SecurityConfig(
             .authorizeHttpRequests { request ->
                 request
                     .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers("/swagger-ui/**", "/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
-                    .requestMatchers("/endpoint", "/api/example/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/swagger-ui/**", "/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").hasRole("ADMIN")
+                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/api/example").denyAll()
                     .anyRequest().authenticated()
             }
             .sessionManagement { manager: SessionManagementConfigurer<HttpSecurity?> ->

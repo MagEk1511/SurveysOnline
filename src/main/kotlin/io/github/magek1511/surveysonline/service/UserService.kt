@@ -54,4 +54,8 @@ class UserService(
         userDao.save(user)
     }
 
+    fun getAllUsers(): List<User> {
+        return userDao.findAll()
+    }
+
 }

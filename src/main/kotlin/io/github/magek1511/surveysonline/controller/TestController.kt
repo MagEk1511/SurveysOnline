@@ -1,7 +1,6 @@
 package io.github.magek1511.surveysonline.controller
 
 import io.github.magek1511.surveysonline.service.UserService
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 
@@ -19,7 +18,6 @@ class TestController(
     }
 
     @GetMapping("admin")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun exampleAdmin(): String {
         return "Hello, admin!"
     }

@@ -11,6 +11,16 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-
+  backend:
+    env_file:
+      - be.env
+    depends_on:
+      - mysql
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: survey-online-app:1.0.0
+    ports:
+      - "8880:8880"
 volumes:
   mysql-data:

@@ -86,4 +86,8 @@ class SurveyService(
 
         return surveyAnswer
     }
+
+    fun getResponsesForSurvey(surveyId: Long): List<SurveyResponse> {
+        return surveyResponseDao.findAllBySurveyId(surveyId)
+    }
 }
