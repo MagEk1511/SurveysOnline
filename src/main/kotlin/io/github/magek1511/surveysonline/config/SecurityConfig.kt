@@ -1,10 +1,11 @@
 package io.github.magek1511.surveysonline.config
 
 import io.github.magek1511.surveysonline.config.filter.JwtAuthenticationFilter
-import io.github.magek1511.surveysonline.service.UserService
+import io.github.magek1511.surveysonline.service.CustomUserDetailsService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
@@ -25,11 +26,13 @@ import org.springframework.web.cors.CorsConfiguration
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    val userService: UserService,
+    val userDetailsService: CustomUserDetailsService,
     val jwtAuthenticationFilter: JwtAuthenticationFilter,
+    val authenticationConfiguration: AuthenticationConfiguration
 ) {
     @Bean
     @Throws(Exception::class)
+    @Order(2)
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf { obj: CsrfConfigurer<HttpSecurity> -> obj.disable() }
             .cors { cors: CorsConfigurer<HttpSecurity?> ->
@@ -69,6 +72,20 @@ class SecurityConfig(
     }
 
     @Bean
+    @Order(1)
+    fun basicAuthFilterChain(http: HttpSecurity): SecurityFilterChain {
+        http
+            .securityMatcher("/actuator/**", "/actuator")
+            .authorizeHttpRequests { request ->
+                request.anyRequest().authenticated()
+            }
+            .httpBasic { }
+            .csrf { it.disable() }
+            .authenticationManager(authenticationManager())
+        return http.build()
+    }
+
+    @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
     }
@@ -76,13 +93,13 @@ class SecurityConfig(
     @Bean
     fun authenticationProvider(): AuthenticationProvider {
         val authProvider = DaoAuthenticationProvider()
-        authProvider.setUserDetailsService(userService.userDetailsService())
+        authProvider.setUserDetailsService(userDetailsService)
         authProvider.setPasswordEncoder(passwordEncoder())
         return authProvider
     }
 
     @Bean
-    fun authenticationManager(config: AuthenticationConfiguration): AuthenticationManager {
-        return config.getAuthenticationManager()
+    fun authenticationManager(): AuthenticationManager {
+        return authenticationConfiguration.authenticationManager
     }
 }

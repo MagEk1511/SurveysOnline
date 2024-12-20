@@ -1,7 +1,7 @@
 package io.github.magek1511.surveysonline.config.filter
 
+import io.github.magek1511.surveysonline.service.CustomUserDetailsService
 import io.github.magek1511.surveysonline.service.JwtService
-import io.github.magek1511.surveysonline.service.UserService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -14,7 +14,8 @@ import org.springframework.web.filter.OncePerRequestFilter
 @Component
 class JwtAuthenticationFilter(
     private val jwtService: JwtService,
-    private val userService: UserService,
+    private val userDetailsService: CustomUserDetailsService,
+    private val allowAuthenticationManager: AllowAuthenticationManager
 ) : OncePerRequestFilter() {
 
     private val HEADER_NAME = "Authorization"
@@ -25,6 +26,11 @@ class JwtAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
+        if (allowAuthenticationManager.isRequestAllowed(request)) {
+            filterChain.doFilter(request, response)
+            return
+        }
+
         val authHeader = request.getHeader(HEADER_NAME)
 
         if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
@@ -36,8 +42,7 @@ class JwtAuthenticationFilter(
         val username = jwtService.getUsername(jwt)
 
         if (SecurityContextHolder.getContext().authentication == null) {
-            val userDetails = userService
-                .userDetailsService()
+            val userDetails = userDetailsService
                 .loadUserByUsername(username)
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
@@ -55,5 +60,9 @@ class JwtAuthenticationFilter(
             }
         }
         filterChain.doFilter(request, response)
+    }
+
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean {
+        return allowAuthenticationManager.isRequestAllowed(request)
     }
 }

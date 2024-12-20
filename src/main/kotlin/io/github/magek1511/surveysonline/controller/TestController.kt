@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("api/example")
 class TestController(
-    private val service: UserService
+    private val service: UserService,
 
 ) {
 

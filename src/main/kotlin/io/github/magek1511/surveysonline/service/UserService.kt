@@ -6,7 +6,6 @@ import io.github.magek1511.surveysonline.database.enums.RoleEnum
 import io.github.magek1511.surveysonline.util.exceptions.UserAlreadyExistException
 import io.github.magek1511.surveysonline.util.exceptions.UserNotFoundException
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 
 
@@ -34,9 +33,6 @@ class UserService(
         return userDao.findByUsername(username) ?: throw UserNotFoundException("User with current username not found.")
     }
 
-    fun userDetailsService(): UserDetailsService {
-        return UserDetailsService { username -> getByUsername(username) }
-    }
 
     fun getCurrentUser(): User {
         val username = SecurityContextHolder.getContext().authentication.name

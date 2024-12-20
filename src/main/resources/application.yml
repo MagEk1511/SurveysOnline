@@ -15,3 +15,22 @@ server:
 
 app:
   secret: ${SECRET_KEY}
+
+security:
+  allowed-ips:
+    - 172.18.0.3
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - 'health'
+          - 'info'
+          - 'prometheus'
+  endpoint:
+    health:
+      show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true
